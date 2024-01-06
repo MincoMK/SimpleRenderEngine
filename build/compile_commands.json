@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/camera.cpp.o -c /home/minco/GLPhysics/src/camera.cpp",
+  "file": "/home/minco/GLPhysics/src/camera.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/camera.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/light.cpp.o -c /home/minco/GLPhysics/src/light.cpp",
+  "file": "/home/minco/GLPhysics/src/light.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/light.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/loader/objloader.cpp.o -c /home/minco/GLPhysics/src/loader/objloader.cpp",
+  "file": "/home/minco/GLPhysics/src/loader/objloader.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/loader/objloader.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/main.cpp.o -c /home/minco/GLPhysics/src/main.cpp",
+  "file": "/home/minco/GLPhysics/src/main.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/material.cpp.o -c /home/minco/GLPhysics/src/material.cpp",
+  "file": "/home/minco/GLPhysics/src/material.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/material.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/mesh.cpp.o -c /home/minco/GLPhysics/src/mesh.cpp",
+  "file": "/home/minco/GLPhysics/src/mesh.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/mesh.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/object.cpp.o -c /home/minco/GLPhysics/src/object.cpp",
+  "file": "/home/minco/GLPhysics/src/object.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/object.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/program.cpp.o -c /home/minco/GLPhysics/src/program.cpp",
+  "file": "/home/minco/GLPhysics/src/program.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/program.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/scene.cpp.o -c /home/minco/GLPhysics/src/scene.cpp",
+  "file": "/home/minco/GLPhysics/src/scene.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/scene.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/transform.cpp.o -c /home/minco/GLPhysics/src/transform.cpp",
+  "file": "/home/minco/GLPhysics/src/transform.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/transform.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/triangle.cpp.o -c /home/minco/GLPhysics/src/triangle.cpp",
+  "file": "/home/minco/GLPhysics/src/triangle.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/triangle.cpp.o"
+},
+{
+  "directory": "/home/minco/GLPhysics/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/GLPhysics.dir/src/window.cpp.o -c /home/minco/GLPhysics/src/window.cpp",
+  "file": "/home/minco/GLPhysics/src/window.cpp",
+  "output": "CMakeFiles/GLPhysics.dir/src/window.cpp.o"
+}
+]
