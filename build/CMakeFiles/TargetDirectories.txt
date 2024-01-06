@@ -1,3 +1,0 @@
-/home/minco/GLPhysics/build/CMakeFiles/GLPhysics.dir
-/home/minco/GLPhysics/build/CMakeFiles/edit_cache.dir
-/home/minco/GLPhysics/build/CMakeFiles/rebuild_cache.dir
