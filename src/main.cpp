@@ -22,7 +22,7 @@ int main() {
     Object cameraObject = Object::empty();
     cameraObject.transform = Transform(vec3(5, 5, 5), vec3(0, 0, 0), vec3(1));
     scene.objects.push_back(&cameraObject);
-    Camera camera = Camera(Transform(vec3(5,5,5),vec3(0),vec3(1)), 90, 800.0f / 600.0f, 0.1f, 100.0f, ProjectionType::PERSPECTIVE);
+    Camera camera = Camera(Transform(vec3(5,5,0),vec3(0),vec3(1)), 90, 800.0f / 600.0f, 0.1f, 100.0f, ProjectionType::PERSPECTIVE);
     scene.cameras.push_back(&camera);
     scene.setActiveCamera(0);
 

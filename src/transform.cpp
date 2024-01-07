@@ -42,9 +42,9 @@ mat4 Transform::getRotateMatrix()
     vec3 up = getUp();
     vec3 right = cross(forward, up);
 
+    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.z), forward);
     rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.x), right);
     rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.y), up);
-    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.z), forward);
 
     return rotateMatrix;
 }
@@ -78,9 +78,9 @@ vec3 Transform::getUp()
 
 vec3 Transform::rotateAxis(vec3 axis) {
     auto rotMatrix = mat4(1);
+    rotMatrix = glm::rotate(rotMatrix, radians(rotation.z), vec3(0, 0, 1));
     rotMatrix = glm::rotate(rotMatrix, radians(rotation.x), vec3(1, 0, 0));
     rotMatrix = glm::rotate(rotMatrix, radians(rotation.y), vec3(0, 1, 0));
-    rotMatrix = glm::rotate(rotMatrix, radians(rotation.z), vec3(0, 0, 1));
 
     return normalize(vec3(rotMatrix * vec4(axis, 1)));
 }
