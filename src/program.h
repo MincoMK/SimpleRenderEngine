@@ -28,6 +28,7 @@ public:
     void setInt(string name, int value);
     void setBool(string name, bool value);
     void setVec3Array(string name, vec3* value, int length);
+    Program clone();
 
     static Program fromShader(string vertexShader, string fragmentShader);
     static Program fromFile(string vertexShaderPath, string fragmentShaderPath);

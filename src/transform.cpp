@@ -1,7 +1,10 @@
 #include "transform.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
 #include <algorithm>
 #include <iostream>
+
+using namespace glm;
 
 Transform::Transform(vec3 pos, vec3 rot, vec3 scale)
 {
@@ -11,58 +14,75 @@ Transform::Transform(vec3 pos, vec3 rot, vec3 scale)
     this->parent = nullptr;
 }
 
+mat4 Transform::getTranslateMatrix()
+{
+    mat4 translateMatrix = mat4(1);
+    if (parent != nullptr) {
+        translateMatrix = parent->getTranslateMatrix();
+    }
+
+    auto forward = getForward();
+    auto up = getUp();
+    auto right = cross(forward, up);
+    vec3 translationNew = forward * translation.z + up * translation.y + right * translation.x;
+
+    translateMatrix = glm::translate(translateMatrix, translationNew);
+
+    return translateMatrix;
+}
+
+mat4 Transform::getRotateMatrix()
+{
+    mat4 rotateMatrix = mat4(1);
+    if (parent != nullptr) {
+        rotateMatrix = parent->getRotateMatrix();
+    }
+
+    vec3 forward = getForward();
+    vec3 up = getUp();
+    vec3 right = cross(forward, up);
+
+    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.x), right);
+    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.y), up);
+    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.z), forward);
+
+    return rotateMatrix;
+}
+
+mat4 Transform::getScaleMatrix()
+{
+    mat4 scaleMatrix = mat4(1);
+    if (parent != nullptr) {
+        scaleMatrix = parent->getScaleMatrix();
+    }
+
+    scaleMatrix = glm::scale(scaleMatrix, scale);
+
+    return scaleMatrix;
+}
+
 mat4 Transform::getModelMatrix()
 {
-    mat4 model = mat4(1.0f);
-    auto translation = getWorldTranslation();
-    auto rotation = getWorldRotation();
-    model = translate(model, translation);
-    model = rotate(model, radians(rotation.x), vec3(1.0f, 0.0f, 0.0f));
-    model = rotate(model, radians(rotation.y), vec3(0.0f, 1.0f, 0.0f));
-    model = rotate(model, radians(rotation.z), vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, scale);
-    return model;
+    return getTranslateMatrix() * getRotateMatrix() * getScaleMatrix();
 }
 
 vec3 Transform::getForward()
 {
-    mat4 rotationMatrix = mat4(1.0f);
-    rotationMatrix = rotate(rotationMatrix, radians(rotation.x), vec3(1.0f, 0.0f, 0.0f));
-    rotationMatrix = rotate(rotationMatrix, radians(rotation.y), vec3(0.0f, 1.0f, 0.0f));
-    rotationMatrix = rotate(rotationMatrix, radians(rotation.z), vec3(0.0f, 0.0f, 1.0f));
-    return rotationMatrix * vec4(0.0f, 0.0f, -1.0f, 1.0f);
+    return rotateAxis(vec3(0, 0, 1));
 }
 
 vec3 Transform::getUp()
 {
-    mat4 rotationMatrix = mat4(1.0f);
-    rotationMatrix = rotate(rotationMatrix, radians(rotation.x), vec3(1.0f, 0.0f, 0.0f));
-    rotationMatrix = rotate(rotationMatrix, radians(rotation.y), vec3(0.0f, 1.0f, 0.0f));
-    rotationMatrix = rotate(rotationMatrix, radians(rotation.z), vec3(0.0f, 0.0f, 1.0f));
-    return rotationMatrix * vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    return rotateAxis(vec3(0, 1, 0));
 }
 
-vec3 Transform::getWorldForward()
-{
-    if (parent == nullptr) {
-        return getForward();
-    } else {
-        return parent->getWorldForward() + getForward();
-    }
-}
+vec3 Transform::rotateAxis(vec3 axis) {
+    auto rotMatrix = mat4(1);
+    rotMatrix = glm::rotate(rotMatrix, radians(rotation.x), vec3(1, 0, 0));
+    rotMatrix = glm::rotate(rotMatrix, radians(rotation.y), vec3(0, 1, 0));
+    rotMatrix = glm::rotate(rotMatrix, radians(rotation.z), vec3(0, 0, 1));
 
-vec3 Transform::getWorldUp()
-{
-    if (parent == nullptr) {
-        return getUp();
-    } else {
-        return parent->getWorldUp() + getUp();
-    }
-}
-
-Transform Transform::identity()
-{
-    return Transform(vec3(0.0f), vec3(0.0f), vec3(1.0f));
+    return normalize(vec3(rotMatrix * vec4(axis, 1)));
 }
 
 void Transform::setParent(Transform *parent)
@@ -79,36 +99,14 @@ void Transform::setParent(Transform *parent)
     }
 }
 
-vec3 Transform::getWorldTranslation()
-{
-    if (parent == nullptr) {
-        return translation;
-    } else {
-        return parent->getWorldTranslation() + translation;
-    }
-}
-
-vec3 Transform::getWorldRotation()
-{
-    if (parent == nullptr) {
-        return rotation;
-    } else {
-        return parent->getWorldRotation() + rotation;
-    }
-}
-
-vec3 Transform::getWorldScale()
-{
-    if (parent == nullptr) {
-        return scale;
-    } else {
-        return parent->getWorldScale() * scale;
-    }
-}
-
 Transform Transform::childOf(Transform *parent)
 {
     Transform t = Transform::identity();
     t.setParent(parent);
     return t;
+}
+
+Transform Transform::identity()
+{
+    return Transform(vec3(0), vec3(0), vec3(1));
 }

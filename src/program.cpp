@@ -169,3 +169,7 @@ void Program::setVec3Array(string name, vec3* value, int length) {
 Program Program::empty() {
     return Program((char*)"", 0, GL_PROGRAM_BINARY_RETRIEVABLE_HINT);
 }
+
+Program Program::clone() {
+    return Program(this->data, this->length, this->binaryFormat);
+}

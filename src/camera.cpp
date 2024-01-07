@@ -1,10 +1,10 @@
 #include "camera.h"
 #include "transform.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 Camera::Camera(Transform transform, float fov, float aspect, float near, float far, ProjectionType type): Object(Mesh::empty(), transform, Material::empty())
-{
-    
+{ 
     this->fov = fov;
     this->aspectRatio = aspect;
     this->near = near;
@@ -27,3 +27,4 @@ mat4 Camera::getProjectionMatrix()
         throw "Invalid projection type";
     }
 }
+

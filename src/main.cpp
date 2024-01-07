@@ -17,53 +17,54 @@ int main() {
     
     Scene scene = Scene();
     
-    Object camWrapper = Object::empty();
-    scene.objects.push_back(&camWrapper);
-    Camera camera = Camera(Transform::childOf(&camWrapper.transform), 90, 800.0f / 600.0f, 0.1f, 100.0f, ProjectionType::PERSPECTIVE);
+    Program p = Program::fromFile("shaders/test_v.glsl", "shaders/test_f.glsl");
+    
+    Object cameraObject = Object::empty();
+    cameraObject.transform = Transform(vec3(5, 5, 5), vec3(0, 0, 0), vec3(1));
+    scene.objects.push_back(&cameraObject);
+    Camera camera = Camera(Transform(vec3(5,5,5),vec3(0),vec3(1)), 90, 800.0f / 600.0f, 0.1f, 100.0f, ProjectionType::PERSPECTIVE);
     scene.cameras.push_back(&camera);
     scene.setActiveCamera(0);
 
+    cameraObject.transform.rotation.y = 0;
+    camera.transform.rotation.x = 0;
+
     // init light
-    Light light = Light(vec3(0, 0, 0), vec3(1, 1, 1), 1);
+    Light light = Light(vec3(5, 5, 5), vec3(1, 1, 1), 1);
     scene.lights.push_back(&light);
 
     Mesh ico = loadObj("models/ico.obj");
-    Program p = Program::fromFile("shaders/test_v.glsl", "shaders/test_f.glsl");
-    p.setVec3("objectColor", vec3(1, 0, 0));
-    Material m = Material(p, NormalType::FLAT);
-    Object o = Object(ico, Transform::identity(), m);
-    scene.objects.push_back(&o);
+    auto icoP = p.clone();
+    icoP.setVec3("objectColor", vec3(1, 0, 0));
+    Material icoM = Material(icoP, NormalType::FLAT);
+    Object icoO = Object(ico, Transform(vec3(3,3,3), vec3(0), vec3(1)), icoM);
+    scene.objects.push_back(&icoO);
+
+    Mesh plane = Mesh::plane();
+    auto planeP = p.clone();
+    planeP.setVec3("objectColor", vec3(0, 1, 0));
+    Material planeM = Material(planeP, NormalType::FLAT);
+    Object planeO = Object(plane, Transform(vec3(0), vec3(0), vec3(5)), planeM);
+    scene.objects.push_back(&planeO);
     
     win.setScene(&scene);
     auto lastMouseX = 0.0;
     auto lastMouseY = 0.0;
     glfwGetCursorPos(win.window, &lastMouseX, &lastMouseY);
     win.startEventLoop([&](float deltaTime) {
-        double mouseX, mouseY;
-        glfwGetCursorPos(win.window, &mouseX, &mouseY);
-        auto mouseDeltaX = mouseX - lastMouseX;
-        auto mouseDeltaY = mouseY - lastMouseY;
-        lastMouseX = mouseX;
-        lastMouseY = mouseY;
+        auto cursorX = 0.0;
+        auto cursorY = 0.0;
+        glfwGetCursorPos(win.window, &cursorX, &cursorY);
+        auto deltaX = cursorX - lastMouseX;
+        auto deltaY = cursorY - lastMouseY;
+        lastMouseX = cursorX;
+        lastMouseY = cursorY;
 
-        camera.transform.rotation.x -= mouseDeltaY * deltaTime * 20;
-        camWrapper.transform.rotation.y -= mouseDeltaX * deltaTime * 20;
+        camera.transform.rotation.y -= deltaX * deltaTime * 30;
+        icoO.transform.rotation.y -= deltaX * deltaTime * 10;
+        //camera.transform.rotation.x -= deltaY * deltaTime * 30;
 
-        if (glfwGetKey(win.window, GLFW_KEY_W) == GLFW_PRESS) {
-            camera.transform.translation += camera.transform.getForward() * deltaTime * 5.0f;
-        }
-
-        if (glfwGetKey(win.window, GLFW_KEY_S) == GLFW_PRESS) {
-            camera.transform.translation -= camera.transform.getForward() * deltaTime * 5.0f;
-        }
-
-        if (glfwGetKey(win.window, GLFW_KEY_A) == GLFW_PRESS) {
-            camera.transform.translation -= normalize(cross(camera.transform.getForward(), camera.transform.getUp())) * deltaTime * 5.0f;
-        }
-
-        if (glfwGetKey(win.window, GLFW_KEY_D) == GLFW_PRESS) {
-            camera.transform.translation += normalize(cross(camera.transform.getForward(), camera.transform.getUp())) * deltaTime * 5.0f;
-        }
+        // set cursor to center
     });
     return 0;
 }
