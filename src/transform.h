@@ -16,10 +16,8 @@ public:
 
     Transform(vec3 translation, vec3 rotation, vec3 scale);
 
-    mat4 getModelMatrix();
-    mat4 getTranslateMatrix();
-    mat4 getRotateMatrix();
-    mat4 getScaleMatrix();
+    mat4 getLocalModelMatrix();
+    mat4 getWorldModelMatrix();
 
     vec3 getForward();
     vec3 getUp();

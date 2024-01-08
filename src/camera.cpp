@@ -14,7 +14,7 @@ Camera::Camera(Transform transform, float fov, float aspect, float near, float f
 
 mat4 Camera::getViewMatrix()
 {
-    return inverse(transform.getModelMatrix());
+    return inverse(transform.getWorldModelMatrix());
 }
 
 mat4 Camera::getProjectionMatrix()

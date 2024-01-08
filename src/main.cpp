@@ -20,29 +20,29 @@ int main() {
     Program p = Program::fromFile("shaders/test_v.glsl", "shaders/test_f.glsl");
     
     Object cameraObject = Object::empty();
-    cameraObject.transform = Transform(vec3(5, 5, 5), vec3(0, 0, 0), vec3(1));
+    cameraObject.transform = Transform(vec3(8, 8, 8), vec3(0, 0, 0), vec3(1));
     scene.objects.push_back(&cameraObject);
-    Camera camera = Camera(Transform(vec3(5,5,0),vec3(0),vec3(1)), 90, 800.0f / 600.0f, 0.1f, 100.0f, ProjectionType::PERSPECTIVE);
+    Camera camera = Camera(Transform::childOf(&cameraObject.transform), 60, 800.0f / 600.0f, 0.1f, 100.0f, ProjectionType::PERSPECTIVE);
     scene.cameras.push_back(&camera);
     scene.setActiveCamera(0);
 
-    cameraObject.transform.rotation.y = 0;
-    camera.transform.rotation.x = 0;
+    cameraObject.transform.rotation.y = 45;
+    camera.transform.rotation.x = -45;
 
     // init light
-    Light light = Light(vec3(5, 5, 5), vec3(1, 1, 1), 1);
+    Light light = Light(vec3(5, 5, 5), vec3(1, 1, 1), 3);
     scene.lights.push_back(&light);
 
     Mesh ico = loadObj("models/ico.obj");
     auto icoP = p.clone();
-    icoP.setVec3("objectColor", vec3(1, 0, 0));
+    icoP.setVec3("objectColor", vec3(.5, .5, .5));
     Material icoM = Material(icoP, NormalType::FLAT);
-    Object icoO = Object(ico, Transform(vec3(3,3,3), vec3(0), vec3(1)), icoM);
+    Object icoO = Object(ico, Transform(vec3(0,3,0), vec3(0), vec3(1)), icoM);
     scene.objects.push_back(&icoO);
 
     Mesh plane = Mesh::plane();
     auto planeP = p.clone();
-    planeP.setVec3("objectColor", vec3(0, 1, 0));
+    planeP.setVec3("objectColor", vec3(.5, .6, .5));
     Material planeM = Material(planeP, NormalType::FLAT);
     Object planeO = Object(plane, Transform(vec3(0), vec3(0), vec3(5)), planeM);
     scene.objects.push_back(&planeO);
@@ -60,8 +60,7 @@ int main() {
         lastMouseX = cursorX;
         lastMouseY = cursorY;
 
-        camera.transform.rotation.y -= deltaX * deltaTime * 30;
-        icoO.transform.rotation.y -= deltaX * deltaTime * 10;
+        //camera.transform.rotation.y -= deltaX;
         //camera.transform.rotation.x -= deltaY * deltaTime * 30;
 
         // set cursor to center

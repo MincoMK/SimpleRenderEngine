@@ -14,56 +14,21 @@ Transform::Transform(vec3 pos, vec3 rot, vec3 scale)
     this->parent = nullptr;
 }
 
-mat4 Transform::getTranslateMatrix()
+mat4 Transform::getLocalModelMatrix()
 {
-    mat4 translateMatrix = mat4(1);
-    if (parent != nullptr) {
-        translateMatrix = parent->getTranslateMatrix();
-    }
-
-    auto forward = getForward();
-    auto up = getUp();
-    auto right = cross(forward, up);
-    vec3 translationNew = forward * translation.z + up * translation.y + right * translation.x;
-
-    translateMatrix = glm::translate(translateMatrix, translationNew);
-
-    return translateMatrix;
+    return translate(mat4(1), translation) * eulerAngleXYZ(radians(rotation.x), radians(rotation.y), radians(rotation.z)) * glm::scale(mat4(1), scale);
 }
 
-mat4 Transform::getRotateMatrix()
+mat4 Transform::getWorldModelMatrix()
 {
-    mat4 rotateMatrix = mat4(1);
+    mat4 modelMatrix = mat4(1);
     if (parent != nullptr) {
-        rotateMatrix = parent->getRotateMatrix();
+        modelMatrix = parent->getWorldModelMatrix();
     }
 
-    vec3 forward = getForward();
-    vec3 up = getUp();
-    vec3 right = cross(forward, up);
+    modelMatrix = modelMatrix * getLocalModelMatrix();
 
-    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.z), forward);
-    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.x), right);
-    rotateMatrix = glm::rotate(rotateMatrix, radians(rotation.y), up);
-
-    return rotateMatrix;
-}
-
-mat4 Transform::getScaleMatrix()
-{
-    mat4 scaleMatrix = mat4(1);
-    if (parent != nullptr) {
-        scaleMatrix = parent->getScaleMatrix();
-    }
-
-    scaleMatrix = glm::scale(scaleMatrix, scale);
-
-    return scaleMatrix;
-}
-
-mat4 Transform::getModelMatrix()
-{
-    return getTranslateMatrix() * getRotateMatrix() * getScaleMatrix();
+    return modelMatrix;
 }
 
 vec3 Transform::getForward()
@@ -77,10 +42,18 @@ vec3 Transform::getUp()
 }
 
 vec3 Transform::rotateAxis(vec3 axis) {
+    float prz = 0;
+    float prx = 0;
+    float pry = 0;
+    if (parent != nullptr) {
+        prz = parent->rotation.z;
+        prx = parent->rotation.x;
+        pry = parent->rotation.y;
+    }
     auto rotMatrix = mat4(1);
-    rotMatrix = glm::rotate(rotMatrix, radians(rotation.z), vec3(0, 0, 1));
-    rotMatrix = glm::rotate(rotMatrix, radians(rotation.x), vec3(1, 0, 0));
-    rotMatrix = glm::rotate(rotMatrix, radians(rotation.y), vec3(0, 1, 0));
+    rotMatrix = glm::rotate(rotMatrix, radians(prz), vec3(0, 0, 1));
+    rotMatrix = glm::rotate(rotMatrix, radians(prx), vec3(1, 0, 0));
+    rotMatrix = glm::rotate(rotMatrix, radians(pry), vec3(0, 1, 0));
 
     return normalize(vec3(rotMatrix * vec4(axis, 1)));
 }

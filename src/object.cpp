@@ -20,10 +20,11 @@ void Object::draw(Scene* scene) {
         return;
     auto program = this->material.program;
     auto cam = scene->getActiveCamera();
-    program.setMat4("model", transform.getModelMatrix());
+    auto modelMatrix = transform.getWorldModelMatrix();
+    program.setMat4("model", modelMatrix);
     program.setMat4("view", cam.getViewMatrix());
     program.setMat4("projection", cam.getProjectionMatrix());
-    program.setMat4("normalMat", transpose(inverse(cam.getViewMatrix() * transform.getModelMatrix())));
+    program.setMat4("normalMat", transpose(inverse(cam.getViewMatrix() * modelMatrix)));
     program.use();
 
     auto lightPositions = vector<vec3>();
