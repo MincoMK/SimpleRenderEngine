@@ -4,7 +4,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <iostream>
-#include "../mesh.h"
+#include "mesh.h"
 
 using namespace std;
 using namespace glm;

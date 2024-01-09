@@ -1,5 +1,5 @@
 #include "objloader.h"
-#include "../triangle.h"
+#include "triangle.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
