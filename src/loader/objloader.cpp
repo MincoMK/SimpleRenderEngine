@@ -1,4 +1,4 @@
-#include "objloader.h"
+#include "loader/objloader.h"
 #include "triangle.h"
 #include <fstream>
 #include <iostream>
